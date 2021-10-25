@@ -1,3 +1,4 @@
+use std::cmp::Reverse;
 use std::collections::HashMap;
 use std::{env, fs};
 use std::fs::File;
@@ -25,7 +26,7 @@ fn main() {
             words.entry(word).and_modify(|count| *count += 1);
         }
 
-        for (word, count) in words.iter_mut().sorted_by_key(|(word, _)| *word) {
+        for (word, count) in words.iter_mut().sorted_by_key(|(_w, c)| Reverse(**c)) {
             csv.write_record(&[&file_name as &str, &word, &count.to_string()]).unwrap();
             *count = 0;
         }
